@@ -4,27 +4,47 @@ defmodule NflRushing.Players do
 
   def find_by_name(players, name)
   def find_by_name(players, ""), do: players
-  def find_by_name(players, name), do: Enum.filter(players, &contains_name(&1, name))
+  def find_by_name(players, name), do: Enum.filter(players, &filter_name(&1, name))
 
-  def order_by(players, %{total_rushing_yards: total_rushing_yards_order}) do
-    Enum.sort_by(players, &total_rushing_yards/1, total_rushing_yards_order)
+  def order_by(players, "name"), do: Enum.sort_by(players, fn player -> player["Player"] end)
+
+  def order_by(players, "total_rushing_yards"),
+    do: Enum.sort_by(players, &total_rushing_yards/1, :desc)
+
+  def order_by(players, "total_rushing_touchdowns"),
+    do: players |> Enum.sort_by(&total_rushing_touchdowns/1, :desc)
+
+  def order_by(players, "longest_rush") do
+    touchdowns = players |> Enum.filter(&touchdown?/1) |> Enum.sort_by(&longest_rush/1, :desc)
+    not_touchdowns = players |> Enum.reject(&touchdown?/1) |> Enum.sort_by(&longest_rush/1, :desc)
+
+    touchdowns ++ not_touchdowns
   end
 
-  defp total_rushing_yards(player)
-
-  defp total_rushing_yards(%{"Yds" => total_rushing_yards}) when is_number(total_rushing_yards) do
-    total_rushing_yards
+  defp total_rushing_yards(%{"Yds" => total_rushing_yards}) do
+    cond do
+      is_number(total_rushing_yards) -> total_rushing_yards
+      is_binary(total_rushing_yards) -> parse_integer(total_rushing_yards)
+    end
   end
 
-  defp total_rushing_yards(%{"Yds" => total_rushing_yards}) when is_binary(total_rushing_yards) do
-    total_rushing_yards |> String.replace(",", "") |> String.to_integer()
+  defp total_rushing_touchdowns(player), do: Map.get(player, "TD")
+
+  defp touchdown?(%{"Lng" => longest_rush}),
+    do: longest_rush |> to_string() |> String.contains?("T")
+
+  defp longest_rush(%{"Lng" => longest_rush}) do
+    cond do
+      is_number(longest_rush) -> longest_rush
+      is_binary(longest_rush) -> parse_integer(longest_rush)
+    end
   end
 
-  # for longest_rush, T is Touchdown (shoud come first)
-  # defp longest_rush(player), do: Map.get(player, "Lng")
-  # defp total_rushing_touchdowns(player), do: Map.get(player, "TD")
+  defp parse_integer(string) do
+    string |> String.replace(",", "") |> String.replace("T", "") |> Integer.parse()
+  end
 
-  defp contains_name(%{"Player" => player_name}, filtered_name) do
+  defp filter_name(%{"Player" => player_name}, filtered_name) do
     player_name = String.downcase(player_name)
     filtered_name = String.downcase(filtered_name)
     String.contains?(player_name, filtered_name)

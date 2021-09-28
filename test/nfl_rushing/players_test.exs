@@ -50,10 +50,35 @@ defmodule NflRushing.PlayersTest do
   describe("order_by/2") do
     test "orders a given list of players by total_rushing_yards (best first)" do
       best_player = %{@player | "Yds" => "1,010"}
-      worst_player = %{@player | "Yds" => 200}
+      worst_player = %{@player | "Yds" => -2}
       players = [worst_player, best_player]
-      opts = %{total_rushing_yards: :desc}
-      assert [^best_player, ^worst_player] = Players.order_by(players, opts)
+
+      assert [^best_player, ^worst_player] = Players.order_by(players, "total_rushing_yards")
+    end
+
+    test "orders a given list of players by longest_rush (best with touchdown first)" do
+      best_touchdown_player = %{@player | "Lng" => "25T"}
+      worst_touchdown_player = %{@player | "Lng" => "5T"}
+      best_player = %{@player | "Lng" => "1,010"}
+      worst_player = %{@player | "Lng" => -2}
+      players = [worst_player, best_touchdown_player, worst_touchdown_player, best_player]
+
+      assert [^best_touchdown_player, ^worst_touchdown_player, ^best_player, ^worst_player] =
+               Players.order_by(players, "longest_rush")
+    end
+
+    test "orders a given list of players by total_rushing_touchdowns (best first)" do
+      best_player = %{@player | "TD" => 5}
+      worst_player = %{@player | "TD" => 0}
+      players = [worst_player, best_player]
+      assert [^best_player, ^worst_player] = Players.order_by(players, "total_rushing_touchdowns")
+    end
+
+    test "orders a given list of players by name" do
+      first_player = %{@player | "Player" => "Chiquinha"}
+      second_player = %{@player | "Player" => "Leandro"}
+      players = [second_player, first_player]
+      assert [^first_player, ^second_player] = Players.order_by(players, "name")
     end
   end
 end

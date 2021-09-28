@@ -17,7 +17,7 @@ defmodule NflRushingWeb.Router do
   scope "/", NflRushingWeb do
     pipe_through :browser
 
-    live "/", PlayersLive, :index
+    live "/", PlayersLive
   end
 
   # Other scopes may use custom stacks.

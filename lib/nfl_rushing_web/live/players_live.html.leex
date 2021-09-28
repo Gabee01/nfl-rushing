@@ -1,48 +1,22 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
-
-  <form phx-change="suggest" phx-submit="search">
-    <input type="text" name="q" value="<%= @query %>" placeholder="Live dependency search" list="results" autocomplete="off"/>
-    <datalist id="results">
-      <%= for {app, _vsn} <- @results do %>
-        <option value="<%= app %>"><%= app %></option>
+<section>
+   <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><%= live_patch "Player Name", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "name"}) %></th>
+        <th scope="col"><%= live_patch "Total Rushing Yards", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "total_rushing_yards"}) %></th>
+        <th scope="col"><%= live_patch "Longest Rush", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "longest_rush"}) %></th>
+        <th scope="col"><%= live_patch "Total Rushing Touchdowns", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "total_rushing_touchdowns"}) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for player <- @players do %>
+        <tr>
+          <th scope="row"><%= player["Player"] %></th>
+          <td><%= player["Yds"] %></td>
+          <td><%= player["Lng"] %></td>
+          <td><%= player["TD"] %></td>
+        </tr>
       <% end %>
-    </datalist>
-    <button type="submit" phx-disable-with="Searching...">Go to Hexdocs</button>
-  </form>
-</section>
-
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
+    </tbody>
+  </table>
 </section>
