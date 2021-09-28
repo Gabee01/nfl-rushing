@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - .:/opt
+      - "build:/opt/_build"
+      - "deps:/opt/deps"
+    ports:
+      - "4000:4000"
+    environment:
+      - MIX_ENV=dev
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - .:/opt
+      - "build:/opt/_build"
+      - "deps:/opt/deps"
+    command: mix do deps.get --only, coveralls --trace --color, format --check-formatted, credo --strict
+    environment:
+      - MIX_ENV=test
+
+volumes:
+  build:
+  deps:
