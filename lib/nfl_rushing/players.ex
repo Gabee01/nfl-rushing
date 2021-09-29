@@ -2,6 +2,9 @@ defmodule NflRushing.Players do
   @moduledoc false
   def list, do: File.read!("rushing.json") |> Jason.decode!()
 
+  @spec order_by(list(map), binary()) :: list(map)
+  def order_by(players, field)
+
   def order_by(players, "name") do
     players
     |> Enum.sort_by(fn player -> player["Player"] end)
@@ -24,6 +27,7 @@ defmodule NflRushing.Players do
     players |> Enum.sort_by(&longest_rush/1, :desc) |> reverse_if_already_sorted(players)
   end
 
+  @spec find_by_name(list(map), binary()) :: list(map)
   def find_by_name(players, name)
   def find_by_name(players, ""), do: players
   def find_by_name(players, name), do: Enum.filter(players, &filter_name(&1, name))

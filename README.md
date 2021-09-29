@@ -53,25 +53,60 @@ We will evaluate you on your ability to solve the problem defined in the require
 ### Help
 If you have any questions regarding requirements, do not hesitate to email your contact at theScore for clarification.
 
-### Installation and running this solution
-... TODO
+# Installation and running this solution
 
-# NflRushing
+The project can be run in two ways: Using `docker` or with `elixir`.
 
-To start your Phoenix server:
+## 1. Running on Docker
 
-  * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+To run the project using docker, start the `web` service described on docker-compose:
+```bash
+docker-compose up web
+```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+This will make the application available at `http://localhost:4000/`
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+To run the test suite with code coverage, credo and check format, run the `test` service described on docker-compose:
+```bash
+docker-compose up test
+```
 
-## Learn more
+## 2. Running on local Elixir
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Start your `nfl_rushing` server:
+```bash
+# Install dependencies with 
+mix deps.get
+
+# Install Node.js dependencies with 
+npm install # inside the `assets` directory
+
+# Start Phoenix endpoint with 
+mix phx.server # back on the project root
+```
+
+Run the suite with test coverage, credo and format check using: 
+```bash
+mix do deps.get --only, coveralls --trace --color, format --check-formatted, credo --strict
+```
+
+## About the implementation
+- I used [Phoenix LiveView](https://github.com/phoenixframework/phoenix_live_view) to load, filter and order the table.
+- I used [a js script](https://yunisdev.github.io/table2csv) to export the csv from the current table vizualization.
+- At first I developed a version where a js table was doing most of the heavy work, and I choose to start again using live_view.
+  - This was the first time I used live_view in a project, but I read a lot to try and follow the conventions and best practices.
+- PlayerLive does all the job now.
+- Player is where the low level code is at, with listing, ordering and filtering logics.
+- Test coverage is at 100% with the following files excluded:
+  ```
+  # /coveralls.json
+  ...
+
+  "skip_files": [
+      "lib/nfl_rushing/application.ex",
+      "lib/nfl_rushing_web.ex",
+      "lib/nfl_rushing_web/router.ex",
+      "lib/nfl_rushing_web/telemetry.ex",
+      "lib/nfl_rushing_web/views/error_helpers.ex"
+    ]
+  ```
