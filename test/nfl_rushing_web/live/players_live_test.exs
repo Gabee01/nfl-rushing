@@ -26,7 +26,7 @@ defmodule NflRushingWeb.PlayersLiveTest do
   end
 
   describe "/?sort_by" do
-    test "renders all players with invalid sort_by", %{conn: conn} do
+    test "renders unsorted players when sort_by is invalid", %{conn: conn} do
       {:ok, players_live, _disconnected_html} = live(conn, "/?sort_by=invalid_field")
       assert render(players_live) =~ NflRushingWeb.Examples.all_players()
     end
