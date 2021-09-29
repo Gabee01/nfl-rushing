@@ -48,30 +48,48 @@ defmodule NflRushing.PlayersTest do
   end
 
   describe("order_by/2") do
-    test "orders a given list of players by total_rushing_yards (best first)" do
+    test "orders a given list of players by total_rushing_yards, reverse order when already sorted" do
       best_player = %{@player | "Yds" => "1,010"}
       worst_player = %{@player | "Yds" => -2}
       players = [worst_player, best_player]
+      sorted_players = [best_player, worst_player]
 
-      assert [^best_player, ^worst_player] = Players.order_by(players, "total_rushing_yards")
+      assert Players.order_by(players, "total_rushing_yards") == sorted_players
+
+      assert Players.order_by(sorted_players, "total_rushing_yards") ==
+               Enum.reverse(sorted_players)
     end
 
-    test "orders a given list of players by longest_rush (best with touchdown first)" do
+    test "orders a given list of players by longest_rush, reverse order when already sorted" do
       best_touchdown_player = %{@player | "Lng" => "25T"}
       worst_touchdown_player = %{@player | "Lng" => "5T"}
       best_player = %{@player | "Lng" => "1,010"}
       worst_player = %{@player | "Lng" => -2}
       players = [worst_player, best_touchdown_player, worst_touchdown_player, best_player]
 
-      assert [^best_player, ^best_touchdown_player, ^worst_touchdown_player, ^worst_player] =
-               Players.order_by(players, "longest_rush")
+      sorted_players = [
+        best_player,
+        best_touchdown_player,
+        worst_touchdown_player,
+        worst_player
+      ]
+
+      assert Players.order_by(players, "longest_rush") == sorted_players
+
+      assert Players.order_by(sorted_players, "longest_rush") ==
+               Enum.reverse(sorted_players)
     end
 
-    test "orders a given list of players by total_rushing_touchdowns (best first)" do
+    test "orders a given list of players by total_rushing_touchdowns, reverse order when already sorted" do
       best_player = %{@player | "TD" => 5}
       worst_player = %{@player | "TD" => 0}
       players = [worst_player, best_player]
-      assert [^best_player, ^worst_player] = Players.order_by(players, "total_rushing_touchdowns")
+      sorted_players = [best_player, worst_player]
+
+      assert Players.order_by(players, "total_rushing_touchdowns") == sorted_players
+
+      assert Players.order_by(sorted_players, "total_rushing_touchdowns") ==
+               Enum.reverse(sorted_players)
     end
 
     test "orders a given list of players by name" do
