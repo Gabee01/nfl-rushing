@@ -18,6 +18,7 @@ defmodule NflRushingWeb.Router do
     pipe_through :browser
 
     live "/", PlayersLive
+    get "/csv", PlayersController, :export
   end
 
   # Other scopes may use custom stacks.

@@ -1,5 +1,8 @@
 <section>
-   <table class="table">
+  <div class="row">
+  <button class="table-btn" onclick="table2csv(this)" data-table="nfl-players">Download</button>
+  </div>
+   <table id="nfl-players" class="table">
     <thead>
       <tr>
         <th scope="col"><%= live_patch "Player Name", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "name"}) %></th>

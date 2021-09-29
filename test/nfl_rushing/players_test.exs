@@ -63,7 +63,7 @@ defmodule NflRushing.PlayersTest do
       worst_player = %{@player | "Lng" => -2}
       players = [worst_player, best_touchdown_player, worst_touchdown_player, best_player]
 
-      assert [^best_touchdown_player, ^worst_touchdown_player, ^best_player, ^worst_player] =
+      assert [^best_player, ^best_touchdown_player, ^worst_touchdown_player, ^worst_player] =
                Players.order_by(players, "longest_rush")
     end
 

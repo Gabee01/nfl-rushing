@@ -2,10 +2,6 @@ defmodule NflRushing.Players do
   @moduledoc false
   def list, do: File.read!("rushing.json") |> Jason.decode!()
 
-  def find_by_name(players, name)
-  def find_by_name(players, ""), do: players
-  def find_by_name(players, name), do: Enum.filter(players, &filter_name(&1, name))
-
   def order_by(players, "name"), do: Enum.sort_by(players, fn player -> player["Player"] end)
 
   def order_by(players, "total_rushing_yards"),
@@ -14,12 +10,11 @@ defmodule NflRushing.Players do
   def order_by(players, "total_rushing_touchdowns"),
     do: players |> Enum.sort_by(&total_rushing_touchdowns/1, :desc)
 
-  def order_by(players, "longest_rush") do
-    touchdowns = players |> Enum.filter(&touchdown?/1) |> Enum.sort_by(&longest_rush/1, :desc)
-    not_touchdowns = players |> Enum.reject(&touchdown?/1) |> Enum.sort_by(&longest_rush/1, :desc)
+  def order_by(players, "longest_rush"), do: Enum.sort_by(players, &longest_rush/1, :desc)
 
-    touchdowns ++ not_touchdowns
-  end
+  def find_by_name(players, name)
+  def find_by_name(players, ""), do: players
+  def find_by_name(players, name), do: Enum.filter(players, &filter_name(&1, name))
 
   defp total_rushing_yards(%{"Yds" => total_rushing_yards}) do
     cond do
@@ -29,9 +24,6 @@ defmodule NflRushing.Players do
   end
 
   defp total_rushing_touchdowns(player), do: Map.get(player, "TD")
-
-  defp touchdown?(%{"Lng" => longest_rush}),
-    do: longest_rush |> to_string() |> String.contains?("T")
 
   defp longest_rush(%{"Lng" => longest_rush}) do
     cond do
@@ -43,6 +35,14 @@ defmodule NflRushing.Players do
   defp parse_integer(string) do
     string |> String.replace(",", "") |> String.replace("T", "") |> Integer.parse()
   end
+
+  defp reverse_sorting_when_already_sorted(current_players, sorted_players)
+
+  defp reverse_sorting_when_already_sorted(sorted_players, sorted_players) do
+    Enum.reverse(sorted_players)
+  end
+
+  defp reverse_sorting_when_already_sorted(_current_players, sorted_players), do: sorted_players
 
   defp filter_name(%{"Player" => player_name}, filtered_name) do
     player_name = String.downcase(player_name)

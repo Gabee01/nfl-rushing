@@ -38,10 +38,17 @@ defmodule NflRushingWeb.PlayersLive do
   @sortable_fields ~w(name total_rushing_yards longest_rush total_rushing_touchdowns)
 
   @impl true
+  def handle_params(%{"name" => name}, _uri, socket) do
+    players = Players.find_by_name(socket.assigns.players, name)
+    {:noreply, assign(socket, players: players)}
+  end
+
+  @impl true
   def handle_params(%{"sort_by" => sort_by}, _uri, socket) do
     case sort_by do
       sort_by when sort_by in @sortable_fields ->
-        {:noreply, assign(socket, players: sort_players(socket.assigns.players, sort_by))}
+        players = Players.order_by(socket.assigns.players, sort_by)
+        {:noreply, assign(socket, players: players)}
 
       _ ->
         {:noreply, socket}
@@ -51,17 +58,4 @@ defmodule NflRushingWeb.PlayersLive do
   def handle_params(_params, _uri, socket) do
     {:noreply, socket}
   end
-
-  defp sort_players(players, sort_by) do
-    sorted_players = Players.order_by(players, sort_by)
-    reverse_sorting_when_already_sorted(players, sorted_players)
-  end
-
-  defp reverse_sorting_when_already_sorted(current_players, sorted_players)
-
-  defp reverse_sorting_when_already_sorted(sorted_players, sorted_players) do
-    Enum.reverse(sorted_players)
-  end
-
-  defp reverse_sorting_when_already_sorted(_current_players, sorted_players), do: sorted_players
 end
