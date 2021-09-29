@@ -1,6 +1,9 @@
 <section>
   <div class="row">
-  <button class="table-btn" onclick="table2csv(this)" data-table="nfl-players">Download</button>
+    <form phx-change="search" class="search-form">
+      <%= text_input :player, :name, placeholder: "Search for name", autofocus: true, "phx-debounce": "300" %>
+    </form>
+    <button class="table-btn" onclick="table2csv(this)" data-table="nfl-players">Download</button>
   </div>
    <table id="nfl-players" class="table">
     <thead>

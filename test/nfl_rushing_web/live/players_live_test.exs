@@ -11,15 +11,17 @@ defmodule NflRushingWeb.PlayersLiveTest do
     end
   end
 
-  describe "/?name" do
+  describe "search by name" do
     test "renders players filtered by name", %{conn: conn} do
-      {:ok, players_live, _disconnected_html} = live(conn, "/?name=Joe")
-      assert render(players_live) =~ NflRushingWeb.Examples.all_joes()
+      {:ok, players_live, _disconnected_html} = live(conn, "/")
+      search = %{player: %{name: "Joe"}}
+      assert render_submit(players_live, :search, search) =~ NflRushingWeb.Examples.all_joes()
     end
 
-    test "renders empty table when filtered by inexisting name", %{conn: conn} do
-      {:ok, players_live, _disconnected_html} = live(conn, "/?name=Joelson")
-      assert render(players_live) =~ NflRushingWeb.Examples.empty_table()
+    test "renders empty table when no name is found", %{conn: conn} do
+      {:ok, players_live, _disconnected_html} = live(conn, "/")
+      search = %{player: %{name: "Joelson"}}
+      assert render_submit(players_live, :search, search) =~ NflRushingWeb.Examples.empty_table()
     end
   end
 

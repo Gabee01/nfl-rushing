@@ -12,8 +12,8 @@ defmodule NflRushingWeb.PlayersLive do
   @sortable_fields ~w(name total_rushing_yards longest_rush total_rushing_touchdowns)
 
   @impl true
-  def handle_params(%{"name" => name}, _uri, socket) do
-    players = Players.find_by_name(socket.assigns.players, name)
+  def handle_event("search", %{"player" => %{"name" => name}}, socket) do
+    players = Players.list() |> Players.find_by_name(name)
     {:noreply, assign(socket, players: players)}
   end
 
