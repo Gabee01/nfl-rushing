@@ -83,8 +83,8 @@ docker-compose up test
 - I used [a js script](https://yunisdev.github.io/table2csv) to export the csv from the current table vizualization.
 - At first I developed a version where a js table was doing most of the heavy work, and I choose to start again using live_view.
   - This was the first time I used live_view in a project, but I read a lot to try and follow the conventions and best practices.
-- PlayerLive does all the job now.
-- Player is where the low level code is at, with listing, ordering and filtering logics.
+- `PlayersLive` does all the sorting and filtering.
+- `Players` is where the low level code is at, with listing, ordering and filtering logics.
 - Test coverage is at 100% with the following files excluded:
   ```
   # /coveralls.json
