@@ -55,9 +55,16 @@ If you have any questions regarding requirements, do not hesitate to email your 
 
 # Installation and running this solution
 
-The project can be run in two ways: Using `docker` or with `elixir`.
+Requirements: 
+- git
+- docker & docker-compose
+  - If you don't have docker or docker-compose installed, you can do so by following the [`docker`](https://docs.docker.com/engine/install/) and [`docker-compose`](https://docs.docker.com/compose/install/) installation guides
 
-## 1. Running on Docker
+Clone the project and access the cloned directory
+```bash
+git clone https://github.com/Gabee01/nfl-rushing.git
+cd nfl-rushing
+```
 
 To run the project using docker, start the `web` service described on docker-compose:
 ```bash
@@ -69,25 +76,6 @@ This will make the application available at `http://localhost:4000/`
 To run the test suite with code coverage, credo and check format, run the `test` service described on docker-compose:
 ```bash
 docker-compose up test
-```
-
-## 2. Running on local Elixir
-
-Start your `nfl_rushing` server:
-```bash
-# Install dependencies with 
-mix deps.get
-
-# Install Node.js dependencies with 
-npm install # inside the `assets` directory
-
-# Start Phoenix endpoint with 
-mix phx.server # back on the project root
-```
-
-Run the suite with test coverage, credo and format check using: 
-```bash
-mix do deps.get --only, coveralls --trace --color, format --check-formatted, credo --strict
 ```
 
 ## About the implementation
