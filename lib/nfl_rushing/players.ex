@@ -7,7 +7,7 @@ defmodule NflRushing.Players do
 
   def order_by(players, "name") do
     players
-    |> Enum.sort_by(fn player -> player["Player"] end)
+    |> Enum.sort_by(&name/1)
     |> reverse_if_already_sorted(players)
   end
 
@@ -24,13 +24,17 @@ defmodule NflRushing.Players do
   end
 
   def order_by(players, "longest_rush") do
-    players |> Enum.sort_by(&longest_rush/1, :desc) |> reverse_if_already_sorted(players)
+    players |> Enum.sort_by(&parse_longest_rush/1, :desc) |> reverse_if_already_sorted(players)
   end
 
   @spec find_by_name(list(map), binary()) :: list(map)
-  def find_by_name(players, name)
-  def find_by_name(players, ""), do: players
-  def find_by_name(players, name), do: Enum.filter(players, &filter_name(&1, name))
+  def find_by_name(players, name) do
+    if name == "" do
+      players
+    else
+      Enum.filter(players, &filter_name(&1, name))
+    end
+  end
 
   defp parse_total_rushing_yards(%{"Yds" => total_rushing_yards}) do
     cond do
@@ -39,18 +43,15 @@ defmodule NflRushing.Players do
     end
   end
 
-  defp total_rushing_touchdowns(player), do: Map.get(player, "TD")
-
-  defp longest_rush(%{"Lng" => longest_rush}) do
+  defp parse_longest_rush(%{"Lng" => longest_rush}) do
     cond do
       is_number(longest_rush) -> longest_rush
       is_binary(longest_rush) -> parse_integer(longest_rush)
     end
   end
 
-  defp parse_integer(string) do
-    string |> String.replace(",", "") |> String.replace("T", "") |> Integer.parse()
-  end
+  defp total_rushing_touchdowns(player), do: Map.get(player, "TD")
+  defp name(player), do: Map.get(player, "Player")
 
   defp reverse_if_already_sorted(sorted_players, current_players)
 
@@ -59,6 +60,10 @@ defmodule NflRushing.Players do
   end
 
   defp reverse_if_already_sorted(sorted_players, _current_players_not_sorted), do: sorted_players
+
+  defp parse_integer(string) do
+    string |> String.replace(",", "") |> String.replace("T", "") |> Integer.parse()
+  end
 
   defp filter_name(%{"Player" => player_name}, filtered_name) do
     player_name = String.downcase(player_name)

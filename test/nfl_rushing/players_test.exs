@@ -38,17 +38,21 @@ defmodule NflRushing.PlayersTest do
       {:ok, players: players}
     end
 
-    test "returns players matching the searched name", %{players: players} do
-      assert Players.find_by_name(players, "cae") == [%{@player | "Player" => "Caetano"}]
-    end
-
     test "returns all players with blank name", %{players: players} do
       assert Players.find_by_name(players, "") == players
+    end
+
+    test "returns empty list when no name is found", %{players: players} do
+      assert Players.find_by_name(players, "caio") == []
+    end
+
+    test "returns players matching the searched name", %{players: players} do
+      assert Players.find_by_name(players, "cae") == [%{@player | "Player" => "Caetano"}]
     end
   end
 
   describe("order_by/2") do
-    test "orders a given list of players by total_rushing_yards, reverse order when already sorted" do
+    test "returns players ordered by total_rushing_yards, reverses order when already sorted" do
       best_player = %{@player | "Yds" => "1,010"}
       worst_player = %{@player | "Yds" => -2}
       players = [worst_player, best_player]
@@ -60,7 +64,7 @@ defmodule NflRushing.PlayersTest do
                Enum.reverse(sorted_players)
     end
 
-    test "orders a given list of players by longest_rush, reverse order when already sorted" do
+    test "returns players ordered by longest_rush, reverses order when already sorted" do
       best_touchdown_player = %{@player | "Lng" => "25T"}
       worst_touchdown_player = %{@player | "Lng" => "5T"}
       best_player = %{@player | "Lng" => "1,010"}
@@ -80,7 +84,7 @@ defmodule NflRushing.PlayersTest do
                Enum.reverse(sorted_players)
     end
 
-    test "orders a given list of players by total_rushing_touchdowns, reverse order when already sorted" do
+    test "returns players ordered by total_rushing_touchdowns, reverses order when already sorted" do
       best_player = %{@player | "TD" => 5}
       worst_player = %{@player | "TD" => 0}
       players = [worst_player, best_player]
@@ -92,7 +96,7 @@ defmodule NflRushing.PlayersTest do
                Enum.reverse(sorted_players)
     end
 
-    test "orders a given list of players by name" do
+    test "returns players ordered by name" do
       first_player = %{@player | "Player" => "Chiquinha"}
       second_player = %{@player | "Player" => "Leandro"}
       players = [second_player, first_player]
