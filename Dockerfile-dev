@@ -3,10 +3,9 @@ FROM elixir:1.12.3-alpine
 
 # init
 RUN apk update && \
-    apk add ca-certificates && update-ca-certificates && \
-    apk add git bash openssl curl alpine-sdk coreutils && \
-    mix local.hex --force && \
-    mix local.rebar --force && \
+    apk add ca-certificates && update-ca-certificates coreutils && \
+    apk add git bash openssl curl alpine-sdk nodejs npm && \
+    mix do local.hex --force, local.rebar --force && \
     mix archive.install hex phx_new --force
 
 COPY . /opt
@@ -14,4 +13,4 @@ ENV MIX_ENV=dev PORT=4000
 
 WORKDIR /opt
 EXPOSE 4000
-CMD ["sh", "-c", "cd assets && npm install; cd /app && mix do deps.get, phx.server"]
+CMD ["sh", "-c", "cd assets && npm install; cd /opt && mix do deps.get, phx.server"]
