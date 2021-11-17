@@ -1,8 +1,8 @@
-defmodule NflRushing.PlayersTest do
+defmodule NflRushingTest do
   @moduledoc false
   use ExUnit.Case
 
-  alias NflRushing.Players
+  alias NflRushing
   @players File.read!("rushing.json") |> Jason.decode!()
 
   @player %{
@@ -24,7 +24,7 @@ defmodule NflRushing.PlayersTest do
   }
 
   describe("list/0") do
-    test "lists all players from rushing.json", do: assert(Players.list() == @players)
+    test "lists all players from rushing.json", do: assert(NflRushing.list() == @players)
   end
 
   describe "find/1" do
@@ -39,15 +39,15 @@ defmodule NflRushing.PlayersTest do
     end
 
     test "returns all players with blank name", %{players: players} do
-      assert Players.find_by_name(players, "") == players
+      assert NflRushing.find_by_name(players, "") == players
     end
 
     test "returns empty list when no name is found", %{players: players} do
-      assert Players.find_by_name(players, "caio") == []
+      assert NflRushing.find_by_name(players, "caio") == []
     end
 
     test "returns players matching the searched name", %{players: players} do
-      assert Players.find_by_name(players, "cae") == [%{@player | "Player" => "Caetano"}]
+      assert NflRushing.find_by_name(players, "cae") == [%{@player | "Player" => "Caetano"}]
     end
   end
 
@@ -58,9 +58,9 @@ defmodule NflRushing.PlayersTest do
       players = [worst_player, best_player]
       sorted_players = [best_player, worst_player]
 
-      assert Players.order_by(players, "total_rushing_yards") == sorted_players
+      assert NflRushing.order_by(players, "total_rushing_yards") == sorted_players
 
-      assert Players.order_by(sorted_players, "total_rushing_yards") ==
+      assert NflRushing.order_by(sorted_players, "total_rushing_yards") ==
                Enum.reverse(sorted_players)
     end
 
@@ -78,9 +78,9 @@ defmodule NflRushing.PlayersTest do
         worst_player
       ]
 
-      assert Players.order_by(players, "longest_rush") == sorted_players
+      assert NflRushing.order_by(players, "longest_rush") == sorted_players
 
-      assert Players.order_by(sorted_players, "longest_rush") ==
+      assert NflRushing.order_by(sorted_players, "longest_rush") ==
                Enum.reverse(sorted_players)
     end
 
@@ -90,9 +90,9 @@ defmodule NflRushing.PlayersTest do
       players = [worst_player, best_player]
       sorted_players = [best_player, worst_player]
 
-      assert Players.order_by(players, "total_rushing_touchdowns") == sorted_players
+      assert NflRushing.order_by(players, "total_rushing_touchdowns") == sorted_players
 
-      assert Players.order_by(sorted_players, "total_rushing_touchdowns") ==
+      assert NflRushing.order_by(sorted_players, "total_rushing_touchdowns") ==
                Enum.reverse(sorted_players)
     end
 
@@ -100,7 +100,7 @@ defmodule NflRushing.PlayersTest do
       first_player = %{@player | "Player" => "Chiquinha"}
       second_player = %{@player | "Player" => "Leandro"}
       players = [second_player, first_player]
-      assert [^first_player, ^second_player] = Players.order_by(players, "name")
+      assert [^first_player, ^second_player] = NflRushing.order_by(players, "name")
     end
   end
 end

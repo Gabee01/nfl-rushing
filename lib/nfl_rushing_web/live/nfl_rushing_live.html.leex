@@ -8,10 +8,10 @@
   <table id="nfl-players" class="table">
     <thead>
       <tr>
-        <th scope="col"><%= live_patch "Player Name", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "name"}) %></th>
-        <th scope="col"><%= live_patch "Total Rushing Yards", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "total_rushing_yards"}) %></th>
-        <th scope="col"><%= live_patch "Longest Rush", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "longest_rush"}) %></th>
-        <th scope="col"><%= live_patch "Total Rushing Touchdowns", to: Routes.live_path(@socket, NflRushingWeb.PlayersLive, %{sort_by: "total_rushing_touchdowns"}) %></th>
+        <th scope="col"><%= live_patch "Player Name", to: Routes.live_path(@socket, NflRushingWeb.NflRushingLive, %{sort_by: "name"}) %></th>
+        <th scope="col"><%= live_patch "Total Rushing Yards", to: Routes.live_path(@socket, NflRushingWeb.NflRushingLive, %{sort_by: "total_rushing_yards"}) %></th>
+        <th scope="col"><%= live_patch "Longest Rush", to: Routes.live_path(@socket, NflRushingWeb.NflRushingLive, %{sort_by: "longest_rush"}) %></th>
+        <th scope="col"><%= live_patch "Total Rushing Touchdowns", to: Routes.live_path(@socket, NflRushingWeb.NflRushingLive, %{sort_by: "total_rushing_touchdowns"}) %></th>
         <th scope="col">Team abbreviation</th>
         <th scope="col">postion</th>
         <th scope="col">Rushing Attempts</th>

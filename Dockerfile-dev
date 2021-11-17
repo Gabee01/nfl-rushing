@@ -14,4 +14,4 @@ ENV MIX_ENV=dev PORT=4000
 
 WORKDIR /opt
 EXPOSE 4000
-CMD ["sh", "-c", "mix phx.server"]
+CMD ["sh", "-c", "cd assets && npm install; cd /app && mix do deps.get, phx.server"]

@@ -40,10 +40,10 @@ defmodule NflRushing.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.13"},
-      {:phoenix_live_view, "~> 0.15.1"},
+      {:phoenix, "~> 1.6"},
+      {:phoenix_live_view, "~> 0.17"},
       {:floki, ">= 0.30.0", only: :test},
-      {:phoenix_html, "~> 2.11"},
+      {:phoenix_html, "~> 3.1.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
       {:telemetry_metrics, "~> 0.4"},
