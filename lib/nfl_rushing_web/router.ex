@@ -1,4 +1,8 @@
 defmodule NflRushingWeb.Router do
+  @moduledoc """
+  Defines the routing structure for the NflRushing web application.
+  This module sets up the main routes, pipelines, and scopes for the application.
+  """
   use NflRushingWeb, :router
 
   pipeline :browser do

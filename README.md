@@ -1,100 +1,80 @@
-# theScore "the Rush" Interview Challenge
-At theScore, we are always looking for intelligent, resourceful, full-stack developers to join our growing team. To help us evaluate new talent, we have created this take-home interview question. This question should take you no more than a few hours.
+# NFL Rushing Statistics Project
 
-**All candidates must complete this before the possibility of an in-person interview. During the in-person interview, your submitted project will be used as the base for further extensions.**
+## Project Description
+This project was developed as part of a job application process for a senior Elixir role. It demonstrates skills in data processing and Elixir development by creating a web application that displays and manipulates NFL rushing statistics.
 
-### Why a take-home challenge?
-In-person coding interviews can be stressful and can hide some people's full potential. A take-home gives you a chance work in a less stressful environment and showcase your talent.
+The application allows users to view, sort, filter, and download NFL rushing data. Although it was not successful in the job application, it showcases valuable skills in building interactive web applications with Elixir and Phoenix.
 
-We want you to be at your best and most comfortable.
+## Main Technologies and Libraries
+- Elixir
+- Phoenix Framework
+- Phoenix LiveView
+- Docker & Docker Compose
 
-### A bit about our tech stack
-As outlined in our job description, you will come across technologies which include a server-side web framework (like Elixir/Phoenix, Ruby on Rails or a modern Javascript framework) and a front-end Javascript framework (like ReactJS)
+## Project Structure and Key Files
+- `lib/nfl_rushing_live.ex`: Contains the LiveView module that handles sorting and filtering of the data.
+- `lib/nfl_rushing.ex`: Contains the low-level code for listing, ordering, and filtering logic.
+- `rushing.json`: The source data file containing NFL rushing statistics.
+- `docker-compose.yml`: Defines the Docker services for running the application and tests.
 
-### Challenge Background
-We have sets of records representing football players' rushing statistics. All records have the following attributes:
-* `Player` (Player's name)
-* `Team` (Player's team abbreviation)
-* `Pos` (Player's postion)
-* `Att/G` (Rushing Attempts Per Game Average)
-* `Att` (Rushing Attempts)
-* `Yds` (Total Rushing Yards)
-* `Avg` (Rushing Average Yards Per Attempt)
-* `Yds/G` (Rushing Yards Per Game)
-* `TD` (Total Rushing Touchdowns)
-* `Lng` (Longest Rush -- a `T` represents a touchdown occurred)
-* `1st` (Rushing First Downs)
-* `1st%` (Rushing First Down Percentage)
-* `20+` (Rushing 20+ Yards Each)
-* `40+` (Rushing 40+ Yards Each)
-* `FUM` (Rushing Fumbles)
+## Setup and Running Instructions
 
-In this repo is a sample data file [`rushing.json`](/rushing.json).
+### Requirements
+- Git
+- Docker & Docker Compose
 
-##### Challenge Requirements
-1. Create a web app. This must be able to do the following steps
-    1. Create a webpage which displays a table with the contents of [`rushing.json`](/rushing.json)
-    2. The user should be able to sort the players by _Total Rushing Yards_, _Longest Rush_ and _Total Rushing Touchdowns_
-    3. The user should be able to filter by the player's name
-    4. The user should be able to download the sorted data as a CSV, as well as a filtered subset
-    
-2. The system should be able to potentially support larger sets of data on the order of 10k records.
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Gabee01/nfl-rushing.git
+   cd nfl-rushing
+   ```
 
-3. Update the section `Installation and running this solution` in the README file explaining how to run your code
+2. Run the application:
+   ```bash
+   docker-compose up web
+   ```
+   The application will be available at `http://localhost:4000/`
 
-### Submitting a solution
-1. Download this repo
-2. Complete the problem outlined in the `Requirements` section
-3. In your personal public GitHub repo, create a new public repo with this implementation
-4. Provide this link to your contact at theScore
+3. Run the test suite:
+   ```bash
+   docker-compose up test
+   ```
+   This will run the tests with code coverage, credo, and format checking.
 
-We will evaluate you on your ability to solve the problem defined in the requirements section as well as your choice of frameworks, and general coding style.
+## How to Use the Application
+1. Open your web browser and navigate to `http://localhost:4000/`
+2. You will see a table displaying NFL rushing statistics.
+3. Use the search bar to filter players by name.
+4. Click on column headers to sort the data by Total Rushing Yards, Longest Rush, or Total Rushing Touchdowns.
+5. Use the "Download CSV" button to download the current view of the data as a CSV file.
 
-### Help
-If you have any questions regarding requirements, do not hesitate to email your contact at theScore for clarification.
+## Interesting Challenges and Solutions
+1. **Data Processing**: Handling and efficiently processing large datasets was a key challenge. This was addressed by implementing efficient sorting and filtering algorithms in Elixir.
 
-# Installation and running this solution
+2. **Real-time Updates**: Implementing real-time updates for sorting and filtering was achieved using Phoenix LiveView, providing a responsive user experience without the need for complex client-side JavaScript.
 
-Requirements: 
-- git
-- docker & docker-compose
-  - If you don't have docker or docker-compose installed, you can do so by following the [`docker`](https://docs.docker.com/engine/install/) and [`docker-compose`](https://docs.docker.com/compose/install/) installation guides
+3. **CSV Export**: Exporting the filtered and sorted data as CSV was implemented using a JavaScript library, showcasing the ability to integrate external tools when necessary.
 
-Clone the project and access the cloned directory
-```bash
-git clone https://github.com/Gabee01/nfl-rushing.git
-cd nfl-rushing
-```
+## Potential Improvements
+1. Implement pagination to handle even larger datasets more efficiently.
+2. Add more advanced filtering options (e.g., filter by team, position, or statistical thresholds).
+3. Improve the UI/UX with a more polished design and responsive layout.
+4. Implement user authentication and the ability to save favorite players or custom views.
 
-To run the project using docker, start the `web` service described on docker-compose:
-```bash
-docker-compose up web
-```
+## Learnings from the Project
+1. Gained practical experience with Phoenix LiveView for building interactive web applications.
+2. Improved skills in data processing and manipulation using Elixir.
+3. Learned to integrate Docker for easy setup and deployment of Elixir applications.
+4. Enhanced understanding of test-driven development in Elixir, achieving 100% test coverage.
+5. Improved ability to write clean, well-structured Elixir code following best practices.
 
-This will make the application available at `http://localhost:4000/`
+While this project didn't lead to a job offer, it provided valuable experience in building a full-stack Elixir application and working with real-world data processing challenges.
 
-To run the test suite with code coverage, credo and check format, run the `test` service described on docker-compose:
-```bash
-docker-compose up test
-```
+## About the Implementation
+- Phoenix LiveView was used to load, filter, and order the table, providing a responsive user experience.
+- A JavaScript library (table2csv) was integrated to export the CSV from the current table visualization.
+- The project structure follows Elixir and Phoenix best practices, with clear separation of concerns between data processing (`NflRushing`) and presentation (`NflRushingLive`).
+- Test coverage is maintained at 100% (excluding some framework-specific files), ensuring reliability and ease of future modifications.
 
-## About the implementation
-- I used [Phoenix LiveView](https://github.com/phoenixframework/phoenix_live_view) to load, filter and order the table.
-- I used [a js script](https://yunisdev.github.io/table2csv) to export the csv from the current table vizualization.
-- At first I developed a version where a js table was doing most of the heavy work, and I choose to start again using live_view.
-  - This was the first time I used live_view in a project, but I read a lot to try and follow the conventions and best practices.
-- `NflRushingLive` does all the sorting and filtering.
-- `NflRushing` is where the low level code is at, with listing, ordering and filtering logics.
-- Test coverage is at 100% with the following files excluded:
-  ```
-  # /coveralls.json
-  ...
-
-  "skip_files": [
-      "lib/nfl_rushing/application.ex",
-      "lib/nfl_rushing_web.ex",
-      "lib/nfl_rushing_web/router.ex",
-      "lib/nfl_rushing_web/telemetry.ex",
-      "lib/nfl_rushing_web/views/error_helpers.ex"
-    ]
-  ```
+This project demonstrates the ability to create efficient, well-tested, and user-friendly web applications using Elixir and Phoenix, showcasing skills valuable for any senior Elixir developer role.
